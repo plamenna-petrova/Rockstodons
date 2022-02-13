@@ -4,7 +4,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    public interface IRepository<TEntity> : IDisposable
+    public interface IBaseRepository<TEntity> : IDisposable
         where TEntity : class
     {
         IQueryable<TEntity> All();

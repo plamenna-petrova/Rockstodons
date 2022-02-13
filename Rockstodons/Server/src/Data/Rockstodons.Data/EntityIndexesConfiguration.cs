@@ -2,9 +2,9 @@
 {
     using System.Linq;
 
-    using Rockstodons.Data.Common.Models;
-
     using Microsoft.EntityFrameworkCore;
+
+    using Rockstodons.Data.Common.Models;
 
     internal static class EntityIndexesConfiguration
     {

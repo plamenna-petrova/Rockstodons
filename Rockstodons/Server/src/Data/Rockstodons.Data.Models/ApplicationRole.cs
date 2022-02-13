@@ -3,11 +3,11 @@ namespace Rockstodons.Data.Models
 {
     using System;
 
-    using Rockstodons.Data.Common.Models;
-
     using Microsoft.AspNetCore.Identity;
 
-    public class ApplicationRole : IdentityRole, IAuditInfo, IDeletableEntity
+    using Rockstodons.Data.Common.Models;
+
+    public class ApplicationRole : IdentityRole<Guid>, IAuditInfo, IDeletableEntity
     {
         public ApplicationRole()
             : this(null)
@@ -17,7 +17,7 @@ namespace Rockstodons.Data.Models
         public ApplicationRole(string name)
             : base(name)
         {
-            this.Id = Guid.NewGuid().ToString();
+            this.Id = Guid.NewGuid();
         }
 
         public DateTime CreatedOn { get; set; }

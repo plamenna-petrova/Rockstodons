@@ -8,10 +8,10 @@
 
     using Microsoft.EntityFrameworkCore;
 
-    public class EfRepository<TEntity> : IRepository<TEntity>
+    public class BaseRepository<TEntity> : IBaseRepository<TEntity>
         where TEntity : class
     {
-        public EfRepository(ApplicationDbContext context)
+        public BaseRepository(ApplicationDbContext context)
         {
             this.Context = context ?? throw new ArgumentNullException(nameof(context));
             this.DbSet = this.Context.Set<TEntity>();

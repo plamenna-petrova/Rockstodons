@@ -6,13 +6,13 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Rockstodons.Data.Common.Models;
-    using Rockstodons.Data.Models;
-
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
+    using Rockstodons.Data.Common.Models;
+    using Rockstodons.Data.Models;
+
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
     {
         private static readonly MethodInfo SetIsDeletedQueryFilterMethod =
             typeof(ApplicationDbContext).GetMethod(

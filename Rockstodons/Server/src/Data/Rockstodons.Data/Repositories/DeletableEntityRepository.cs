@@ -3,15 +3,15 @@
     using System;
     using System.Linq;
 
+    using Microsoft.EntityFrameworkCore;
+
     using Rockstodons.Data.Common.Models;
     using Rockstodons.Data.Common.Repositories;
 
-    using Microsoft.EntityFrameworkCore;
-
-    public class EfDeletableEntityRepository<TEntity> : EfRepository<TEntity>, IDeletableEntityRepository<TEntity>
+    public class DeletableEntityRepository<TEntity> : BaseRepository<TEntity>, IDeletableEntityRepository<TEntity>
         where TEntity : class, IDeletableEntity
     {
-        public EfDeletableEntityRepository(ApplicationDbContext context)
+        public DeletableEntityRepository(ApplicationDbContext context)
             : base(context)
         {
         }

@@ -44,4 +44,8 @@
     <ProjectReference Include="..\Rockstodons.Data.Models\Rockstodons.Data.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>
