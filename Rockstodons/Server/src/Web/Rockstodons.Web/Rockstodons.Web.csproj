@@ -19,7 +19,6 @@
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
     <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.113" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.6" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.6" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.312" PrivateAssets="all">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
@@ -34,6 +33,5 @@
     <ProjectReference Include="..\..\Services\Rockstodons.Services.Messaging\Rockstodons.Services.Messaging.csproj" />
     <ProjectReference Include="..\..\Services\Rockstodons.Services\Rockstodons.Services.csproj" />
     <ProjectReference Include="..\Rockstodons.Web.Infrastructure\Rockstodons.Web.Infrastructure.csproj" />
-    <ProjectReference Include="..\Rockstodons.Web.ViewModels\Rockstodons.Web.ViewModels.csproj" />
   </ItemGroup>
 </Project>

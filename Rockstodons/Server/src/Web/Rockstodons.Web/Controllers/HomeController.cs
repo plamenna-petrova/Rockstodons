@@ -2,27 +2,15 @@
 {
     using System.Diagnostics;
 
-    using Rockstodons.Web.ViewModels;
-
     using Microsoft.AspNetCore.Mvc;
 
-    public class HomeController : BaseController
+    [ApiController]
+    [Route("[controller]")]
+    public class HomeController : ControllerBase
     {
-        public IActionResult Index()
+        public IActionResult Get()
         {
-            return this.View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return this.View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return this.View(
-                new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
+            return Ok("It works");
         }
     }
 }

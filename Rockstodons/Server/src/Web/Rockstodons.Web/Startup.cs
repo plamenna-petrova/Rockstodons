@@ -1,6 +1,12 @@
 ﻿namespace Rockstodons.Web
 {
-    using System.Reflection;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
 
     using Rockstodons.Data;
     using Rockstodons.Data.Common;
@@ -8,19 +14,7 @@
     using Rockstodons.Data.Models;
     using Rockstodons.Data.Repositories;
     using Rockstodons.Data.Seeding;
-    using Rockstodons.Services.Data;
-    using Rockstodons.Services.Mapping;
     using Rockstodons.Services.Messaging;
-    using Rockstodons.Web.ViewModels;
-
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
 
     public class Startup
     {
@@ -34,11 +28,12 @@
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(
-                options => options.UseSqlServer(this.configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ApplicationDbContext>(options 
+                => options.UseSqlServer(this.configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
-                .AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddIdentityCore<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
+                .AddRoles<ApplicationRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.Configure<CookiePolicyOptions>(
                 options =>
@@ -47,13 +42,7 @@
                         options.MinimumSameSitePolicy = SameSiteMode.None;
                     });
 
-            services.AddControllersWithViews(
-                options =>
-                    {
-                        options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-                    }).AddRazorRuntimeCompilation();
-            services.AddRazorPages();
-            services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddControllers();
 
             services.AddSingleton(this.configuration);
 
@@ -64,14 +53,11 @@
 
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
-            services.AddTransient<ISettingsService, SettingsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
-
             // Seed data on application startup
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
@@ -85,11 +71,6 @@
                 app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
             }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
-            }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -97,15 +78,18 @@
 
             app.UseRouting();
 
+            app.UseCors(options => options
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod());
+
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(
                 endpoints =>
                     {
-                        endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-                        endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
-                        endpoints.MapRazorPages();
+                        endpoints.MapControllers();
                     });
         }
     }
