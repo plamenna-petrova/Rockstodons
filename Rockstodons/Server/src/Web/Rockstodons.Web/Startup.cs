@@ -1,5 +1,6 @@
 ﻿namespace Rockstodons.Web
 {
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -7,7 +8,7 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-
+    using Microsoft.IdentityModel.Tokens;
     using Rockstodons.Data;
     using Rockstodons.Data.Common;
     using Rockstodons.Data.Common.Repositories;
@@ -15,6 +16,8 @@
     using Rockstodons.Data.Repositories;
     using Rockstodons.Data.Seeding;
     using Rockstodons.Services.Messaging;
+    using Rockstodons.Web.Infrastructure;
+    using System.Text;
 
     public class Startup
     {
@@ -41,6 +44,31 @@
                         options.CheckConsentNeeded = context => true;
                         options.MinimumSameSitePolicy = SameSiteMode.None;
                     });
+
+            var applicationSettingsConfigurationSection = this.configuration.GetSection("ApplicationSettings");
+            services.Configure<ApplicationSettings>(applicationSettingsConfigurationSection);
+
+            var applicationSettings = applicationSettingsConfigurationSection.Get<ApplicationSettings>();
+            var key = Encoding.ASCII.GetBytes(applicationSettings.Secret);
+
+            services
+            .AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                };
+            });
 
             services.AddControllers();
 

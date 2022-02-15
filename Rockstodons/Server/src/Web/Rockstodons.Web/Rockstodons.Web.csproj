@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -36,6 +37,7 @@
     <ProjectReference Include="..\..\Services\Rockstodons.Services.Mapping\Rockstodons.Services.Mapping.csproj" />
     <ProjectReference Include="..\..\Services\Rockstodons.Services.Messaging\Rockstodons.Services.Messaging.csproj" />
     <ProjectReference Include="..\..\Services\Rockstodons.Services\Rockstodons.Services.csproj" />
+    <ProjectReference Include="..\Rockstodons.Web.DTOs\Rockstodons.Web.DTOs.csproj" />
     <ProjectReference Include="..\Rockstodons.Web.Infrastructure\Rockstodons.Web.Infrastructure.csproj" />
   </ItemGroup>
 </Project>
